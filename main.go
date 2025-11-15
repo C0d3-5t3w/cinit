@@ -6,8 +6,7 @@ import (
 	"path/filepath"
 )
 
-var makefile = `
-.PHONY: all init build clean run install uninstall
+var makefile = `.PHONY: all init build clean run install uninstall
 # Change this
 APP=app
 
@@ -27,8 +26,7 @@ uninstall:
 	rm /usr/local/bin/${APP}
 `
 
-var license = `
-MIT License
+var license = `MIT License
 
 Copyright (c) 2025 C0D3-5T3W 
 
@@ -51,15 +49,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.v
 `
 
-var mainfile = `
-#include <stdio.h>
+var mainfile = `#include <stdio.h>
 
 int main(void) {}
 
 `
 
-var cmakelists = `
-cmake_minimum_required(VERSION 3.10)
+var cmakelists = `cmake_minimum_required(VERSION 3.10)
 project(app C) # Change app name
 
 set(CMAKE_C_STANDARD 99)
