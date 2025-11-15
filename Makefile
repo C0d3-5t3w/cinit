@@ -1,5 +1,5 @@
 
-.PHONY: all init build clean run
+.PHONY: all init build clean run install uninstall
 APP=cinit
 all: clean init build
 init:

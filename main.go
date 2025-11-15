@@ -7,20 +7,24 @@ import (
 )
 
 var makefile = `
-	.PHONY: all init build clean run
+.PHONY: all init build clean run install uninstall
+# Change this
+APP=app
 
-	APP=app
+all: clean init build run
 
-	all: clean init build run
-
-	init:
-		mkdir -p bin
-	build:
-		cd bin && cmake .. && make
-	clean:
-		rm -rf bin
-	run:
-		cd bin && ./${APP}
+init:
+	mkdir -p bin
+build:
+	cd bin && cmake .. && make
+clean:
+	rm -rf bin
+run:
+	cd bin && ./${APP}
+install:
+	cp bin/${APP} /usr/local/bin/${APP}
+uninstall:
+	rm /usr/local/bin/${APP}
 `
 
 var license = `
