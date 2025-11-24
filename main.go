@@ -7,8 +7,11 @@ import (
 )
 
 var makefile = `.PHONY: all init build clean run install uninstall
-# Change this
-APP=app
+
+default_target: all
+.PHONY : default_target
+
+APP=app # Change this
 
 all: clean init build run
 
@@ -24,6 +27,7 @@ install:
 	cp bin/${APP} /usr/local/bin/${APP}
 uninstall:
 	rm /usr/local/bin/${APP}
+
 `
 
 var license = `MIT License
@@ -46,8 +50,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.v
-`
+SOFTWARE.v`
 
 var mainfile = `#include <stdio.h>
 
@@ -55,36 +58,35 @@ int main(void) {}
 
 `
 
-var cmakelists = `cmake_minimum_required(VERSION 3.10)
+var cmakelists = `cmake_minimum_required(VERSION 3.12)
 project(app C) # Change app name
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 # Add compiler warnings
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|GCC|Clang|AppleClang")
 	add_compile_options(-Wall -Wextra -Wpedantic)
 elseif(MSVC)
 	add_compile_options(/W4)
 endif()
 
+# Find raylib
+find_package(raylib REQUIRED)
+
 # Source files
 file(GLOB_RECURSE SOURCES "src/*.c")
-file(GLOB_RECURSE HEADERS "include/*.h")
-
-# Include directories
-include_directories(include)
+file(GLOB_RECURSE HEADERS "src/*.h")
 
 # Executable
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
-# Add subdirectories if needed
-# add_subdirectory(lib)
+# Link raylib
+target_link_libraries(${PROJECT_NAME} raylib)
 
-# Link libraries
-# target_link_libraries(${PROJECT_NAME} PRIVATE your_library)
-`
+# Include directories
+target_include_directories(${PROJECT_NAME} PRIVATE src)`
 
 func genDirs() {
 
