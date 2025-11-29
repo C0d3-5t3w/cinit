@@ -73,7 +73,7 @@ elseif(MSVC)
 endif()
 
 # Find raylib
-find_package(raylib REQUIRED)
+# find_package(raylib REQUIRED)
 
 # Source files
 file(GLOB_RECURSE SOURCES "src/*.c")
@@ -83,7 +83,7 @@ file(GLOB_RECURSE HEADERS "src/*.h")
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # Link raylib
-target_link_libraries(${PROJECT_NAME} raylib)
+# target_link_libraries(${PROJECT_NAME} raylib)
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE src)`
