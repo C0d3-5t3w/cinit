@@ -52,10 +52,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.v`
 
-var mainfile = `#include <stdio.h>
+var mainfile = `#include "root.h" // global header (includes libc.h which includes stdio.h, stdlib.h, etc)
 
-int main(void) {}
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+int main(void) {
+  PH();
+}
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+`
+
+var rootheader = `#pragma once
+#ifndef ROOT_H
+#define ROOT_H
+
+#include "libc.h" // standard C library header
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void PH(void); // placeholder function
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
+#endif // ROOT_H
 `
 
 var cmakelists = `cmake_minimum_required(VERSION 4.0.1)
@@ -117,6 +145,12 @@ func genFiles() {
 	mainPath := filepath.Join("src", "main.c")
 	if err := os.WriteFile(mainPath, []byte(mainfile), 0644); err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating main.c: %v\n", err)
+		os.Exit(1)
+	}
+
+	rootHeaderPath := filepath.Join("src", "root.h")
+	if err := os.WriteFile(rootHeaderPath, []byte(rootheader), 0644); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating root.h: %v\n", err)
 		os.Exit(1)
 	}
 }
