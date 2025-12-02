@@ -158,11 +158,10 @@ func genFiles() {
 func main() {
 	genDirs()
 	genFiles()
-	fmt.Printf(`Project created successfully!\n
-- CMakeLists.txt\n
-- Makefile\n
-- LICENSE\n
-- src/main.c\n
-- src/root.h\n
-\n`)
+	fmt.Printf(`Project created successfully!
+- CMakeLists.txt
+- Makefile
+- LICENSE
+- src/main.c
+- src/root.h`)
 }
