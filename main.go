@@ -58,15 +58,15 @@ int main(void) {}
 
 `
 
-var cmakelists = `cmake_minimum_required(VERSION 3.12)
+var cmakelists = `cmake_minimum_required(VERSION 4.0.1)
 project(app C) # Change app name
 
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
+set(CMAKE_C_EXTENSIONS ON)
 
 # Add compiler warnings
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|GCC|Clang|AppleClang")
+if(CMAKE_C_COMPILER_ID MATCHES "cc|gnu|gcc|clang|appleclang") # cc|gnu|gcc|clang|appleclang
 	add_compile_options(-Wall -Wextra -Wpedantic)
 elseif(MSVC)
 	add_compile_options(/W4)
