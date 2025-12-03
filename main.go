@@ -71,7 +71,7 @@ var rootheader = `#pragma once
 #ifndef ROOT_H
 #define ROOT_H
 
-#include "libc.h" // standard C library header
+#include <libc.h> // standard C library header
 
 #ifdef __cplusplus
 extern "C" {
