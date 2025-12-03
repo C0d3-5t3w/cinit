@@ -52,38 +52,40 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.v`
 
-var mainfile = `#include "root.h" // global header (includes libc.h which includes stdio.h, stdlib.h, etc)
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+var mainfile = `#include "root.h" // global header
 
 int main(void) {
-  PH();
+  PH(1); // placeholder function
 }
 
-#ifdef __cplusplus
-}
-#endif // __cplusplus
 `
 
 var rootheader = `#pragma once
 #ifndef ROOT_H
 #define ROOT_H
 
-#include <libc.h> // standard C library header
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void PH(void); // placeholder function
+extern void PH(int i); // placeholder function
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
 #endif // ROOT_H
+
+`
+
+var modfile = `#include "root.h" // global header
+
+extern void PH(int i) {
+	printf("%d:lol", i);
+}
+
 `
 
 var cmakelists = `cmake_minimum_required(VERSION 4.0.1)
@@ -94,7 +96,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
 # Add compiler warnings
-if(CMAKE_C_COMPILER_ID MATCHES "cc|gnu|gcc|clang|appleclang") # cc|gnu|gcc|clang|appleclang
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 	add_compile_options(-Wall -Wextra -Wpedantic)
 elseif(MSVC)
 	add_compile_options(/W4)
@@ -114,7 +116,8 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 # target_link_libraries(${PROJECT_NAME} raylib)
 
 # Include directories
-target_include_directories(${PROJECT_NAME} PRIVATE src)`
+target_include_directories(${PROJECT_NAME} PRIVATE src)
+`
 
 func genDirs() {
 
@@ -151,6 +154,12 @@ func genFiles() {
 	rootHeaderPath := filepath.Join("src", "root.h")
 	if err := os.WriteFile(rootHeaderPath, []byte(rootheader), 0644); err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating root.h: %v\n", err)
+		os.Exit(1)
+	}
+	
+	modPath := filepath.Join("src", "mod.c")
+	if err := os.WriteFile(modPath, []byte(modfile), 0644); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating mod.c: %v\n", err)
 		os.Exit(1)
 	}
 }
