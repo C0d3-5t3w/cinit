@@ -1,17 +1,16 @@
-
 .PHONY: all init build clean run install uninstall
 
 default_target: all
 .PHONY : default_target
 
-APP=cinit
+APP=app # Change this
 
-all: clean init build
+all: clean init build run
 
 init:
 	mkdir -p bin
 build:
-	go build -o bin/${APP} cmd/main.go
+	cd bin && cmake .. && make
 clean:
 	rm -rf bin
 run:
